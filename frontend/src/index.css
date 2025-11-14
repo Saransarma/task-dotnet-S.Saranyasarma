@@ -1,0 +1,13 @@
+body {
+  background-color: #28435e;
+}
+.app-container {
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+.card-title {
+  font-weight: 600;
+}
+.table-actions button {
+  margin-right: 0.5rem;
+}
