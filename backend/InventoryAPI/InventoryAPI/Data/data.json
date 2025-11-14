@@ -1,0 +1,19 @@
+{
+  "products": [
+    {
+      "Id": "a67f6704-e2e9-4824-8ba3-794fd4306d31",
+      "ProductName": "string",
+      "ProductCode": "string",
+      "CategoryId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "Price": 0.0,
+      "StockQuantity": 0,
+      "IsActive": true
+    }
+  ],
+  "categories": [
+    {
+      "Id": "dd14aa48-3f1e-41ac-9149-cea7613068fc",
+      "Name": "SK"
+    }
+  ]
+}
