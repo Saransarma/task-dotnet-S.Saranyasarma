@@ -34,3 +34,4 @@ C:\Users\User\Desktop\Inventory Management\backend\InventoryAPI\InventoryAPI\obj
 C:\Users\User\Desktop\Inventory Management\backend\InventoryAPI\InventoryAPI\obj\Debug\net8.0\InventoryAPI.pdb
 C:\Users\User\Desktop\Inventory Management\backend\InventoryAPI\InventoryAPI\obj\Debug\net8.0\InventoryAPI.genruntimeconfig.cache
 C:\Users\User\Desktop\Inventory Management\backend\InventoryAPI\InventoryAPI\obj\Debug\net8.0\ref\InventoryAPI.dll
+C:\Users\User\Desktop\Inventory Management\backend\InventoryAPI\InventoryAPI\obj\Debug\net8.0\InventoryAPI.sourcelink.json

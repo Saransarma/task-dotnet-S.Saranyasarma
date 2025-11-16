@@ -11,9 +11,29 @@ import {
     MenuItem,
     Select,
     InputLabel,
-    FormControl
+    FormControl,
+    FormHelperText
 } from "@mui/material";
-import { toast } from "react-toastify";
+import * as Yup from "yup";
+import { reach } from "yup";
+
+
+const schema = Yup.object().shape({
+    name: Yup.string().trim().required("Product name is required"),
+    code: Yup.string().trim().required("Product code is required"),
+    categoryId: Yup.string()
+        .required("Category is required")
+        .test("not-empty", "Category is required", value => value !== ""),
+    price: Yup.number()
+        .typeError("Enter a valid price")
+        .min(0, "Price cannot be negative")
+        .required("Price is required"),
+    stockQuantity: Yup.number()
+        .typeError("Enter a valid stock quantity")
+        .min(0, "Stock cannot be negative")
+        .required("Stock quantity is required"),
+    isActive: Yup.boolean()
+});
 
 export default function ProductDialog({ open, onClose, onSave, categories = [], initial = null }) {
     const [form, setForm] = useState({
@@ -21,113 +41,103 @@ export default function ProductDialog({ open, onClose, onSave, categories = [], 
         name: "",
         code: "",
         categoryId: "",
-        price: 0,
-        stockQuantity: 0,
+        price: "",
+        stockQuantity: "",
         isActive: true
     });
+
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         if (initial) {
             setForm({
-                id: initial.id ?? null,
-                name: initial.name ?? "",
-                code: initial.code ?? "",
-                categoryId: initial.categoryId ?? (categories.length ? categories[0].id : ""),
-                price: initial.price ?? 0,
-                stockQuantity: initial.stockQuantity ?? 0,
-                isActive: initial.isActive ?? true
+                id: initial.id ?? initial.Id ?? null,
+                name: initial.name ?? initial.ProductName ?? "",
+                code: initial.code ?? initial.ProductCode ?? "",
+                categoryId: initial.categoryId ?? initial.CategoryId ?? (categories[0]?.id ?? ""),
+                price: initial.price ?? initial.Price ?? "",
+                stockQuantity: initial.stockQuantity ?? initial.StockQuantity ?? "",
+                isActive: initial.isActive ?? initial.IsActive ?? true
             });
         } else {
-            setForm(prev => ({
-                ...prev,
+            setForm({
                 id: null,
                 name: "",
                 code: "",
-                categoryId: categories.length ? categories[0].id : "",
-                price: 0,
-                stockQuantity: 0,
+                categoryId: categories[0]?.id ?? "",
+                price: "",
+                stockQuantity: "",
                 isActive: true
-            }));
+            });
         }
+        setErrors({});
     }, [initial, categories, open]);
+
 
     function change(e) {
         const { name, value, type, checked } = e.target;
 
-        // convert numeric fields to numbers
-        if (name === "price") {
-            setForm(prev => ({ ...prev, price: value === "" ? "" : Number(value) }));
-            return;
-        }
-        if (name === "stockQuantity") {
-            setForm(prev => ({ ...prev, stockQuantity: value === "" ? "" : parseInt(value, 10) }));
-            return;
-        }
+        setForm(prev => ({
+            ...prev,
+            [name]: type === "checkbox" ? checked : value
+        }));
 
-        if (type === "checkbox") {
-            setForm(prev => ({ ...prev, [name]: checked }));
-            return;
-        }
 
-        setForm(prev => ({ ...prev, [name]: value }));
+        reach(schema, name)
+            .validate(type === "checkbox" ? checked : value)
+            .then(() => setErrors(prev => ({ ...prev, [name]: "" })))
+            .catch(err => setErrors(prev => ({ ...prev, [name]: err.message })));
     }
 
-    function validate() {
-        if (!form.name || !form.name.trim()) {
-            toast.error("Enter product name");
-            return false;
-        }
-        if (!form.code || !form.code.trim()) {
-            toast.error("Enter product code");
-            return false;
-        }
-        if (!form.categoryId) {
-            toast.error("Select a category");
-            return false;
-        }
-        if (form.price === "" || Number.isNaN(Number(form.price))) {
-            toast.error("Enter a valid price");
-            return false;
-        }
-        if (form.stockQuantity === "" || Number.isNaN(Number(form.stockQuantity))) {
-            toast.error("Enter a valid stock quantity");
-            return false;
-        }
-        return true;
-    }
 
-    function submit(e) {
+    async function submit(e) {
         e.preventDefault();
-        if (!validate()) return;
 
-        // ensure proper types
-        const payload = {
-            id: form.id ?? undefined, // backend will ignore undefined id for POST
-            name: form.name.trim(),
-            code: form.code.trim(),
-            categoryId: form.categoryId,
-            price: Number(form.price),
-            stockQuantity: parseInt(form.stockQuantity, 10),
-            isActive: !!form.isActive
-        };
+        try {
+            await schema.validate(form, { abortEarly: false });
+            setErrors({});
 
-        onSave(payload);
+    
+            const payload = {
+                id: form.id ?? undefined,
+                name: form.name.trim(),
+                code: form.code.trim(),
+                categoryId: form.categoryId,
+                price: Number(form.price),
+                stockQuantity: Number(form.stockQuantity),
+                isActive: !!form.isActive
+            };
+
+            onSave(payload);
+
+        } catch (validationError) {
+            const fieldErrors = {};
+            if (validationError.inner) {
+                validationError.inner.forEach(err => {
+                    fieldErrors[err.path] = err.message;
+                });
+            }
+            setErrors(fieldErrors);
+        }
     }
 
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
             <DialogTitle>{form.id ? "Edit Product" : "Add Product"}</DialogTitle>
+
             <DialogContent>
                 <form id="product-form" onSubmit={submit} style={{ marginTop: 8 }}>
                     <TextField
-                        label="Name"
+                        label="Product Name"
                         name="name"
                         value={form.name}
                         onChange={change}
                         fullWidth
                         margin="dense"
-                        required
+                        error={!!errors.name}
+                        helperText={errors.name}
                     />
+
                     <TextField
                         label="Code"
                         name="code"
@@ -135,17 +145,18 @@ export default function ProductDialog({ open, onClose, onSave, categories = [], 
                         onChange={change}
                         fullWidth
                         margin="dense"
-                        required
+                        error={!!errors.code}
+                        helperText={errors.code}
                     />
-                    <FormControl fullWidth margin="dense">
-                        <InputLabel id="product-category-label">Category</InputLabel>
+
+                    <FormControl fullWidth margin="dense" error={!!errors.categoryId}>
+                        <InputLabel id="category-label">Category</InputLabel>
                         <Select
-                            labelId="product-category-label"
+                            labelId="category-label"
                             label="Category"
                             name="categoryId"
                             value={form.categoryId}
                             onChange={change}
-                            required
                         >
                             {categories.map(c => (
                                 <MenuItem key={c.id} value={c.id}>
@@ -153,6 +164,7 @@ export default function ProductDialog({ open, onClose, onSave, categories = [], 
                                 </MenuItem>
                             ))}
                         </Select>
+                        {errors.categoryId && <FormHelperText>{errors.categoryId}</FormHelperText>}
                     </FormControl>
 
                     <TextField
@@ -161,9 +173,10 @@ export default function ProductDialog({ open, onClose, onSave, categories = [], 
                         value={form.price}
                         onChange={change}
                         type="number"
-                        inputProps={{ step: "0.01", min: 0 }}
                         fullWidth
                         margin="dense"
+                        error={!!errors.price}
+                        helperText={errors.price}
                     />
 
                     <TextField
@@ -172,13 +185,20 @@ export default function ProductDialog({ open, onClose, onSave, categories = [], 
                         value={form.stockQuantity}
                         onChange={change}
                         type="number"
-                        inputProps={{ min: 0 }}
                         fullWidth
                         margin="dense"
+                        error={!!errors.stockQuantity}
+                        helperText={errors.stockQuantity}
                     />
 
                     <FormControlLabel
-                        control={<Checkbox checked={form.isActive} name="isActive" onChange={change} />}
+                        control={
+                            <Checkbox
+                                checked={form.isActive}
+                                name="isActive"
+                                onChange={change}
+                            />
+                        }
                         label="Active"
                         sx={{ mt: 1 }}
                     />
@@ -187,7 +207,9 @@ export default function ProductDialog({ open, onClose, onSave, categories = [], 
 
             <DialogActions>
                 <Button onClick={onClose} variant="outlined">Cancel</Button>
-                <Button type="submit" form="product-form" variant="contained" color="primary">Save</Button>
+                <Button type="submit" form="product-form" variant="contained" color="primary">
+                    Save
+                </Button>
             </DialogActions>
         </Dialog>
     );

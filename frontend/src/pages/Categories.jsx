@@ -4,11 +4,14 @@ import CategoryDialog from "../components/CategoryDialog";
 import { toast } from "react-toastify";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { useNavigate } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export default function Categories() {
     const [categories, setCategories] = useState([]);
     const [open, setOpen] = useState(false);
     const [editing, setEditing] = useState(null);
+    const navigate = useNavigate();
 
     function load() {
         api.get("/categories")
@@ -30,22 +33,36 @@ export default function Categories() {
 
     function save(cat) {
         if (cat.id) {
-            api.put(`/categories/${cat.id}`, cat)
-                .then(() => { toast.success("Updated"); setOpen(false); load(); })
+            api.put(`/categories/${cat.id}`, { name: cat.name })
+                .then(() => {
+                    toast.success("Category updated");
+                    setOpen(false);
+                    setEditing(null);
+                    load();
+                })
                 .catch(() => toast.error("Update failed"));
         } else {
-            api.post("/categories", cat)
-                .then(() => { toast.success("Created"); setOpen(false); load(); })
+            api.post("/categories", { name: cat.name })
+                .then(() => {
+                    toast.success("Category created");
+                    setOpen(false);
+                    setEditing(null);
+                    load();
+                })
                 .catch(() => toast.error("Create failed"));
         }
     }
 
     function remove(id) {
         if (!window.confirm("Delete category?")) return;
+
         api.delete(`/categories/${id}`)
-            .then(() => { toast.success("Deleted"); load(); })
+            .then(() => {
+                toast.success("Category deleted");
+                load();
+            })
             .catch(err => {
-                const msg = err?.response?.data || "Failed to delete";
+                const msg = err?.response?.data || "Delete failed";
                 toast.error(msg);
             });
     }
@@ -53,10 +70,13 @@ export default function Categories() {
     return (
         <>
             <div className="d-flex justify-content-between align-items-center mb-3">
-                <h2>Categories</h2>
+                <button className="btn btn-outline-secondary me-3" onClick={() => navigate(-1)}>
+                    <ArrowBackIcon style={{ color: "white" }} />
+                </button>
+                <h2 style={{ color: "white" }}>Categories</h2>
                 <div>
                     <button className="btn btn-primary me-2" onClick={addNew}>Add Category</button>
-                    <button className="btn btn-outline-secondary" onClick={load}>Refresh</button>
+                    <button className="btn btn-outline-secondary" onClick={load} style={{ color: "white" }}>Refresh</button>
                 </div>
             </div>
 
@@ -70,20 +90,33 @@ export default function Categories() {
                                     <th style={{ width: 160 }}>Actions</th>
                                 </tr>
                             </thead>
+
                             <tbody>
                                 {categories.length === 0 && (
                                     <tr>
-                                        <td colSpan="2" className="p-4 text-center">No categories</td>
+                                        <td colSpan="2" className="p-4 text-center">
+                                            No categories
+                                        </td>
                                     </tr>
                                 )}
+
                                 {categories.map(c => (
-                                    <tr key={c.id}>
-                                        <td>{c.name}</td>
+                                    <tr key={c.id} style={{ cursor: "pointer" }}>
+                                        <td onClick={() => navigate(`/category-products/${c.id}`)}>
+                                            {c.name}
+                                        </td>
                                         <td>
-                                            <button className="btn btn-sm btn-outline-primary me-1" onClick={() => editCat(c)}>
+                                            <button
+                                                className="btn btn-sm btn-outline-primary me-1"
+                                                onClick={() => editCat(c)}
+                                            >
                                                 <EditIcon fontSize="small" />
                                             </button>
-                                            <button className="btn btn-sm btn-outline-danger" onClick={() => remove(c.id)}>
+
+                                            <button
+                                                className="btn btn-sm btn-outline-danger"
+                                                onClick={() => remove(c.id)}
+                                            >
                                                 <DeleteIcon fontSize="small" />
                                             </button>
                                         </td>
@@ -97,7 +130,10 @@ export default function Categories() {
 
             <CategoryDialog
                 open={open}
-                onClose={() => setOpen(false)}
+                onClose={() => {
+                    setOpen(false);
+                    setEditing(null);
+                }}
                 onSave={save}
                 initial={editing}
             />

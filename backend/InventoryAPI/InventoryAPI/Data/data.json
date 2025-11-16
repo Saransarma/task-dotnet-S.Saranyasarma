@@ -1,19 +1,41 @@
 {
-  "products": [
+  "Products": [
     {
-      "Id": "a67f6704-e2e9-4824-8ba3-794fd4306d31",
-      "ProductName": "string",
-      "ProductCode": "string",
-      "CategoryId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      "Price": 0.0,
-      "StockQuantity": 0,
+      "Id": "98def0d4-f853-43e4-a232-e9f8e1984d14",
+      "ProductName": "ABC",
+      "ProductCode": "ABC",
+      "CategoryId": "ff53d6f5-6041-4de6-8cee-10c91d8c7df9",
+      "Price": 112.0,
+      "StockQuantity": 1,
+      "IsActive": false
+    },
+    {
+      "Id": "40c205d4-d69b-4b30-b829-a4c3a4131938",
+      "ProductName": "S23 Ultra",
+      "ProductCode": "23456",
+      "CategoryId": "ff53d6f5-6041-4de6-8cee-10c91d8c7df9",
+      "Price": 2000000.0,
+      "StockQuantity": 25,
+      "IsActive": true
+    },
+    {
+      "Id": "29350ea0-355b-4f7e-a6f1-2f8145dc601c",
+      "ProductName": "DEF",
+      "ProductCode": "56489",
+      "CategoryId": "044e82f6-7132-40bc-a46f-939a1e7d9de2",
+      "Price": 1322.0,
+      "StockQuantity": 1,
       "IsActive": true
     }
   ],
-  "categories": [
+  "Categories": [
     {
-      "Id": "dd14aa48-3f1e-41ac-9149-cea7613068fc",
-      "Name": "SK"
+      "Id": "ff53d6f5-6041-4de6-8cee-10c91d8c7df9",
+      "Name": "A"
+    },
+    {
+      "Id": "044e82f6-7132-40bc-a46f-939a1e7d9de2",
+      "Name": "B"
     }
   ]
 }

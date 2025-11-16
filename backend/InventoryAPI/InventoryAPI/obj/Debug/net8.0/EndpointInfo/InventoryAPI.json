@@ -362,11 +362,11 @@
             "type": "string",
             "format": "uuid"
           },
-          "productName": {
+          "name": {
             "type": "string",
             "nullable": true
           },
-          "productCode": {
+          "code": {
             "type": "string",
             "nullable": true
           },
