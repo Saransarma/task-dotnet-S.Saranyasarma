@@ -1,6 +1,7 @@
 ﻿import React, { useEffect, useState } from "react";
 import api from "../api";
 import ProductDialog from "../components/ProductDialog";
+import DeleteConfirmation from "../components/DeleteConfirmation";
 import { toast } from "react-toastify";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -16,9 +17,11 @@ export default function Products() {
     const [editing, setEditing] = useState(null);
     const [loading, setLoading] = useState(false);
     const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
-
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 20;
+
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [deletingProduct, setDeletingProduct] = useState(null);
 
     const navigate = useNavigate();
 
@@ -68,17 +71,25 @@ export default function Products() {
         }
     }
 
-    async function handleDelete(id) {
-        if (!window.confirm("Delete product?")) return;
+    const openDeleteDialog = (product) => {
+        setDeletingProduct(product);
+        setDeleteDialogOpen(true);
+    };
+
+    const confirmDelete = async () => {
+        if (!deletingProduct) return;
         try {
-            await api.delete(`/products/${id}`);
+            await api.delete(`/products/${deletingProduct.id}`);
             toast.success("Deleted");
             load();
         } catch (err) {
             console.error(err);
             toast.error("Delete failed");
+        } finally {
+            setDeleteDialogOpen(false);
+            setDeletingProduct(null);
         }
-    }
+    };
 
     async function toggleStatus(product) {
         const updated = { ...product, isActive: !product.isActive };
@@ -213,7 +224,7 @@ export default function Products() {
                                             </button>
                                             <button
                                                 className="btn btn-sm btn-outline-danger"
-                                                onClick={() => handleDelete(p.id)}
+                                                onClick={() => openDeleteDialog(p)}
                                                 title="Delete"
                                             >
                                                 <DeleteIcon fontSize="small" />
@@ -246,6 +257,13 @@ export default function Products() {
                 onSave={handleSave}
                 categories={categories}
                 initial={editing}
+            />
+
+            <DeleteConfirmation
+                open={deleteDialogOpen}
+                onClose={() => setDeleteDialogOpen(false)}
+                onConfirm={confirmDelete}
+                itemName={deletingProduct?.name || ""}
             />
         </>
     );

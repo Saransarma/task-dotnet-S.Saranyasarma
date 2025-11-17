@@ -1,41 +1,116 @@
 {
   "Products": [
     {
-      "Id": "98def0d4-f853-43e4-a232-e9f8e1984d14",
-      "ProductName": "ABC",
-      "ProductCode": "ABC",
-      "CategoryId": "ff53d6f5-6041-4de6-8cee-10c91d8c7df9",
-      "Price": 112.0,
-      "StockQuantity": 1,
+      "Id": "1b401406-44fd-4561-9114-d5d85677a5dd",
+      "ProductName": "Samsung S23 Ultra",
+      "ProductCode": "S23Ul",
+      "CategoryId": "7546a2ac-a587-4ead-a933-97cfd5cb4b15",
+      "Price": 200000.0,
+      "StockQuantity": 10,
       "IsActive": false
     },
     {
-      "Id": "40c205d4-d69b-4b30-b829-a4c3a4131938",
-      "ProductName": "S23 Ultra",
-      "ProductCode": "23456",
-      "CategoryId": "ff53d6f5-6041-4de6-8cee-10c91d8c7df9",
-      "Price": 2000000.0,
+      "Id": "474c95f5-6fbe-4a03-94f1-370863ca0a64",
+      "ProductName": "Apple 13 Promax",
+      "ProductCode": "A13PM",
+      "CategoryId": "7546a2ac-a587-4ead-a933-97cfd5cb4b15",
+      "Price": 210000.0,
+      "StockQuantity": 15,
+      "IsActive": true
+    },
+    {
+      "Id": "f1de8ac4-44c1-4ff4-a8b2-6a187e97e702",
+      "ProductName": "Oppo Fold",
+      "ProductCode": "OppF",
+      "CategoryId": "7546a2ac-a587-4ead-a933-97cfd5cb4b15",
+      "Price": 150000.0,
+      "StockQuantity": 3,
+      "IsActive": false
+    },
+    {
+      "Id": "70ddcd2c-aef5-4310-a54a-f9d7e6c7885b",
+      "ProductName": "Abans Speaker",
+      "ProductCode": "ABS",
+      "CategoryId": "fd5858b6-84cb-42fe-9985-da282a92bed5",
+      "Price": 25000.0,
       "StockQuantity": 25,
       "IsActive": true
     },
     {
-      "Id": "29350ea0-355b-4f7e-a6f1-2f8145dc601c",
-      "ProductName": "DEF",
-      "ProductCode": "56489",
-      "CategoryId": "044e82f6-7132-40bc-a46f-939a1e7d9de2",
-      "Price": 1322.0,
-      "StockQuantity": 1,
+      "Id": "e62a0c28-f5fa-4e1c-a027-3e878f49548c",
+      "ProductName": "JBL Go3",
+      "ProductCode": "Go3",
+      "CategoryId": "fd5858b6-84cb-42fe-9985-da282a92bed5",
+      "Price": 30000.0,
+      "StockQuantity": 3,
+      "IsActive": true
+    },
+    {
+      "Id": "885aba84-fdf1-4d8d-964f-2bb7984ca288",
+      "ProductName": "Anker 30000MAh",
+      "ProductCode": "An30",
+      "CategoryId": "a9eb2c7c-88bb-4c9f-9eee-6d3c5f327589",
+      "Price": 20000.0,
+      "StockQuantity": 6,
+      "IsActive": false
+    },
+    {
+      "Id": "e1441fc9-caa6-4719-be5f-f2e8bc402d8e",
+      "ProductName": "Aspor 10000",
+      "ProductCode": "As10",
+      "CategoryId": "a9eb2c7c-88bb-4c9f-9eee-6d3c5f327589",
+      "Price": 2500.0,
+      "StockQuantity": 30,
+      "IsActive": true
+    },
+    {
+      "Id": "cdb455b6-8a82-41ed-b664-5cd5b7997c41",
+      "ProductName": "Dell i5",
+      "ProductCode": "Di5",
+      "CategoryId": "3c5f75e9-94d7-46aa-a855-6695f3ae452b",
+      "Price": 120000.0,
+      "StockQuantity": 3,
+      "IsActive": true
+    },
+    {
+      "Id": "e38c2dc4-2e0a-454a-b569-edc552414d66",
+      "ProductName": "Asus Tuf F15",
+      "ProductCode": "TufF15",
+      "CategoryId": "3c5f75e9-94d7-46aa-a855-6695f3ae452b",
+      "Price": 400000.0,
+      "StockQuantity": 4,
+      "IsActive": false
+    },
+    {
+      "Id": "6c7c2788-f23b-4294-a4fb-3ec8a82d9ff3",
+      "ProductName": "Hp i7 envy",
+      "ProductCode": "envyi7",
+      "CategoryId": "7546a2ac-a587-4ead-a933-97cfd5cb4b15",
+      "Price": 260000.99,
+      "StockQuantity": 8,
       "IsActive": true
     }
   ],
   "Categories": [
     {
-      "Id": "ff53d6f5-6041-4de6-8cee-10c91d8c7df9",
-      "Name": "A"
+      "Id": "7546a2ac-a587-4ead-a933-97cfd5cb4b15",
+      "Name": "Mobile"
     },
     {
-      "Id": "044e82f6-7132-40bc-a46f-939a1e7d9de2",
-      "Name": "B"
+      "Id": "fd5858b6-84cb-42fe-9985-da282a92bed5",
+      "Name": "Spekers"
+    },
+    {
+      "Id": "72e05b28-3aeb-4cba-898d-ea1086f7ca11",
+      "Name": "Phone Cases"
+    },
+    {
+      "Id": "a9eb2c7c-88bb-4c9f-9eee-6d3c5f327589",
+      "Name": "Power Banks"
+    },
+    {
+      "Id": "3c5f75e9-94d7-46aa-a855-6695f3ae452b",
+      "Name": "Laptop"
     }
   ]
 }

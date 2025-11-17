@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../api";
 import CategoryDialog from "../components/CategoryDialog";
+import DeleteConfirmation from "../components/DeleteConfirmation";
 import { toast } from "react-toastify";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -11,6 +12,8 @@ export default function Categories() {
     const [categories, setCategories] = useState([]);
     const [open, setOpen] = useState(false);
     const [editing, setEditing] = useState(null);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [deletingCategory, setDeletingCategory] = useState(null);
     const navigate = useNavigate();
 
     function load() {
@@ -53,19 +56,25 @@ export default function Categories() {
         }
     }
 
-    function remove(id) {
-        if (!window.confirm("Delete category?")) return;
+    const openDeleteDialog = (category) => {
+        setDeletingCategory(category);
+        setDeleteDialogOpen(true);
+    };
 
-        api.delete(`/categories/${id}`)
-            .then(() => {
-                toast.success("Category deleted");
-                load();
-            })
-            .catch(err => {
-                const msg = err?.response?.data || "Delete failed";
-                toast.error(msg);
-            });
-    }
+    const confirmDelete = async () => {
+        if (!deletingCategory) return;
+        try {
+            await api.delete(`/categories/${deletingCategory.id}`);
+            toast.success("Category deleted");
+            load();
+        } catch (err) {
+            const msg = err?.response?.data || "Delete failed";
+            toast.error(msg);
+        } finally {
+            setDeleteDialogOpen(false);
+            setDeletingCategory(null);
+        }
+    };
 
     return (
         <>
@@ -115,7 +124,7 @@ export default function Categories() {
 
                                             <button
                                                 className="btn btn-sm btn-outline-danger"
-                                                onClick={() => remove(c.id)}
+                                                onClick={() => openDeleteDialog(c)}
                                             >
                                                 <DeleteIcon fontSize="small" />
                                             </button>
@@ -136,6 +145,13 @@ export default function Categories() {
                 }}
                 onSave={save}
                 initial={editing}
+            />
+
+            <DeleteConfirmation
+                open={deleteDialogOpen}
+                onClose={() => setDeleteDialogOpen(false)}
+                onConfirm={confirmDelete}
+                itemName={deletingCategory?.name || ""}
             />
         </>
     );
