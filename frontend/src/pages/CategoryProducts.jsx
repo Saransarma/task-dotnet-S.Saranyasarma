@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import api from "../api";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -19,17 +19,18 @@ export default function CategoryProducts() {
                 api.get(`/categories/${id}`)
             ]);
 
-            console.log("Products:", pRes.data);
-            console.log("Category:", cRes.data);
+            const category = cRes.data;
 
-            const filteredProducts = (pRes.data || []).filter(
-                p => p.categoryId.toString() === id
+            // 🟢 MATCH EXACT BACKEND FIELDS:
+            const filtered = pRes.data.filter(
+                (p) => p.categoryId === category.id
             );
-            setProducts(filteredProducts);
-            setCategoryName(cRes.data.name || "");
+
+            setProducts(filtered);
+            setCategoryName(category.name);
         } catch (err) {
-            console.error(err);
-            toast.error("Failed to load data");
+            console.error("ERR:", err);
+            toast.error("Unable to load data");
         } finally {
             setLoading(false);
         }
@@ -42,10 +43,16 @@ export default function CategoryProducts() {
     return (
         <div>
             <div className="d-flex align-items-center mb-3">
-                <button className="btn btn-outline-secondary me-3" onClick={() => navigate(-1)}>
+                <button
+                    className="btn btn-outline-secondary me-3"
+                    onClick={() => navigate(-1)}
+                >
                     <ArrowBackIcon style={{ color: "white" }} />
                 </button>
-                <h2 style={{ color: "white" }}>{categoryName} Products</h2>
+
+                <h2 style={{ color: "white" }}>
+                    {categoryName} Products
+                </h2>
             </div>
 
             <div className="card shadow-sm">
@@ -60,25 +67,33 @@ export default function CategoryProducts() {
                                     <th>Stock</th>
                                 </tr>
                             </thead>
+
                             <tbody>
                                 {loading && (
                                     <tr>
-                                        <td colSpan="4" className="text-center p-4">Loading...</td>
+                                        <td colSpan="4" className="text-center p-3">
+                                            Loading...
+                                        </td>
                                     </tr>
                                 )}
+
                                 {!loading && products.length === 0 && (
                                     <tr>
-                                        <td colSpan="4" className="text-center p-4">No products</td>
+                                        <td colSpan="4" className="text-center p-3">
+                                            No products in this category
+                                        </td>
                                     </tr>
                                 )}
-                                {!loading && products.map(p => (
-                                    <tr key={p.id}>
-                                        <td>{p.name}</td>
-                                        <td>{p.code}</td>
-                                        <td>${Number(p.price).toFixed(2)}</td>
-                                        <td>{p.stockQuantity}</td>
-                                    </tr>
-                                ))}
+
+                                {!loading &&
+                                    products.map((p) => (
+                                        <tr key={p.id}>
+                                            <td>{p.name}</td>
+                                            <td>{p.code}</td>
+                                            <td>{p.price}</td>
+                                            <td>{p.stockQuantity}</td>
+                                        </tr>
+                                    ))}
                             </tbody>
                         </table>
                     </div>

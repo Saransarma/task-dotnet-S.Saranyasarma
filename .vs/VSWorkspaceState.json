@@ -1,10 +1,13 @@
 {
   "ExpandedNodes": [
     "",
+    "\\backend",
+    "\\backend\\InventoryAPI",
+    "\\backend\\InventoryAPI\\InventoryAPI",
     "\\frontend",
     "\\frontend\\src",
-    "\\frontend\\src\\components",
-    "\\frontend\\src\\pages"
+    "\\frontend\\src\\assets"
   ],
+  "SelectedNode": "\\backend\\InventoryAPI\\InventoryAPI.sln",
   "PreviewInSolutionExplorer": false
 }

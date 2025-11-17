@@ -5,7 +5,7 @@ using InventoryAPI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization; // Import is not needed here, but kept in mind
+using System.Text.Json.Serialization; 
 
 namespace InventoryAPI.Controllers
 {
@@ -20,14 +20,11 @@ namespace InventoryAPI.Controllers
         }
 
         [HttpGet]
-        // This will now return camelCase properties thanks to the [JsonPropertyName] attributes
         public ActionResult<IEnumerable<Product>> Get() => Ok(_data.GetProducts());
 
         [HttpPost]
-        // The model binder will correctly populate 'model' from the camelCase JSON payload
         public ActionResult<Product> Post([FromBody] Product model)
         {
-            // Use the actual property name from the model (ProductName) for server-side checks
             if (string.IsNullOrWhiteSpace(model.ProductName)) return BadRequest("ProductName required");
             var products = _data.GetProducts();
             model.Id = Guid.NewGuid();
@@ -44,7 +41,6 @@ namespace InventoryAPI.Controllers
             var existing = products.FirstOrDefault(p => p.Id == id);
             if (existing == null) return NotFound();
 
-            // The model is correctly populated from the frontend's camelCase payload
             existing.ProductName = model.ProductName;
             existing.ProductCode = model.ProductCode;
             existing.CategoryId = model.CategoryId;
