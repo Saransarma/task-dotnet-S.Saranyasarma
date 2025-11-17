@@ -27,7 +27,6 @@ C:\Users\User\Desktop\Inventory Management\backend\InventoryAPI\InventoryAPI\obj
 C:\Users\User\Desktop\Inventory Management\backend\InventoryAPI\InventoryAPI\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\Users\User\Desktop\Inventory Management\backend\InventoryAPI\InventoryAPI\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\User\Desktop\Inventory Management\backend\InventoryAPI\InventoryAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\Users\User\Desktop\Inventory Management\backend\InventoryAPI\InventoryAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\User\Desktop\Inventory Management\backend\InventoryAPI\InventoryAPI\obj\Debug\net8.0\Inventor.BCB991DF.Up2Date
 C:\Users\User\Desktop\Inventory Management\backend\InventoryAPI\InventoryAPI\obj\Debug\net8.0\InventoryAPI.dll
 C:\Users\User\Desktop\Inventory Management\backend\InventoryAPI\InventoryAPI\obj\Debug\net8.0\refint\InventoryAPI.dll

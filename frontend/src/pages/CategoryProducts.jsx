@@ -14,6 +14,7 @@ export default function CategoryProducts() {
     async function load() {
         setLoading(true);
         try {
+            // Fetch all products and the category
             const [pRes, cRes] = await Promise.all([
                 api.get("/products"),
                 api.get(`/categories/${id}`)
@@ -21,15 +22,15 @@ export default function CategoryProducts() {
 
             const category = cRes.data;
 
-            // 🟢 MATCH EXACT BACKEND FIELDS:
+            // Ensure type consistency: convert both to string before comparing
             const filtered = pRes.data.filter(
-                (p) => p.categoryId === category.id
+                (p) => (p.categoryId) === (category.id)
             );
 
             setProducts(filtered);
             setCategoryName(category.name);
         } catch (err) {
-            console.error("ERR:", err);
+            console.error("Error loading data:", err);
             toast.error("Unable to load data");
         } finally {
             setLoading(false);
@@ -37,24 +38,22 @@ export default function CategoryProducts() {
     }
 
     useEffect(() => {
-        load();
+        if (id) load();
     }, [id]);
 
     return (
         <div>
-            <div className="d-flex align-items-center mb-3">
-                <button
-                    className="btn btn-outline-secondary me-3"
-                    onClick={() => navigate(-1)}
-                >
+            <div className="d-flex justify-content-between align-items-center mb-3">
+                <button className="btn btn-outline-secondary me-3" onClick={() => navigate(-1)}>
                     <ArrowBackIcon style={{ color: "white" }} />
                 </button>
-
-                <h2 style={{ color: "white" }}>
-                    {categoryName} Products
-                </h2>
+                <h2 style={{ color: "white" }}>{categoryName} Category Products</h2>
+                <div>
+                    <button className="btn btn-outline-secondary" onClick={load} style={{ color: "white" }}>Refresh</button>
+                </div>
             </div>
 
+            {/* Products Table */}
             <div className="card shadow-sm">
                 <div className="card-body p-0">
                     <div className="table-responsive">
@@ -67,7 +66,6 @@ export default function CategoryProducts() {
                                     <th>Stock</th>
                                 </tr>
                             </thead>
-
                             <tbody>
                                 {loading && (
                                     <tr>
@@ -76,7 +74,6 @@ export default function CategoryProducts() {
                                         </td>
                                     </tr>
                                 )}
-
                                 {!loading && products.length === 0 && (
                                     <tr>
                                         <td colSpan="4" className="text-center p-3">
@@ -84,7 +81,6 @@ export default function CategoryProducts() {
                                         </td>
                                     </tr>
                                 )}
-
                                 {!loading &&
                                     products.map((p) => (
                                         <tr key={p.id}>

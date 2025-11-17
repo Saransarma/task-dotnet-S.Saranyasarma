@@ -30,10 +30,15 @@ export default function LowStockProducts() {
 
     return (
         <div>
-            <button className="btn btn-outline-secondary me-3" onClick={() => navigate(-1)}>
-                <ArrowBackIcon style={{ color: "white" }} />
-            </button>
-            <h2 style={{ color: "white" }}>Low Stock Products</h2>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+                <button className="btn btn-outline-secondary me-3" onClick={() => navigate(-1)}>
+                    <ArrowBackIcon style={{ color: "white" }} />
+                </button>
+                <h2 style={{ color: "white" }}>Low Stock Products</h2>
+                <div>
+                    <button className="btn btn-outline-secondary" onClick={load} style={{ color: "white" }}>Refresh</button>
+                </div>
+            </div>
             <div className="card shadow-sm mt-3">
                 <div className="card-body p-0">
                     <div className="table-responsive">

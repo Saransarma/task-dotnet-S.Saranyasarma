@@ -17,6 +17,19 @@ namespace InventoryAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Category>> Get() => Ok(_data.GetCategories());
 
+        [HttpGet("{id}")]
+public ActionResult<Category> GetById(Guid id)
+{
+    var cats = _data.GetCategories();
+    var category = cats.FirstOrDefault(c => c.Id == id);
+
+    if (category == null)
+        return NotFound(); 
+
+    return Ok(category); 
+}
+
+
         [HttpPost]
         public ActionResult<Category> Post([FromBody] Category model)
         {

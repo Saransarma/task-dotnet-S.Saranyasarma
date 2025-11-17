@@ -4,10 +4,8 @@
     "\\backend",
     "\\backend\\InventoryAPI",
     "\\backend\\InventoryAPI\\InventoryAPI",
-    "\\frontend",
-    "\\frontend\\src",
-    "\\frontend\\src\\assets"
+    "\\backend\\InventoryAPI\\InventoryAPI\\Controllers"
   ],
-  "SelectedNode": "\\backend\\InventoryAPI\\InventoryAPI.sln",
+  "SelectedNode": "\\backend\\InventoryAPI\\InventoryAPI\\Controllers\\ProductsController.cs",
   "PreviewInSolutionExplorer": false
 }

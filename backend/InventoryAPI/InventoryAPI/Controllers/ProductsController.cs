@@ -22,6 +22,16 @@ namespace InventoryAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Product>> Get() => Ok(_data.GetProducts());
 
+        [HttpGet("category/{categoryId}")]
+        public ActionResult<IEnumerable<Product>> GetByCategory(Guid categoryId)
+        {
+            var products = _data.GetProducts();
+            var filtered = products.Where(p => p.CategoryId == categoryId).ToList();
+
+            return Ok(filtered);
+        }
+
+
         [HttpPost]
         public ActionResult<Product> Post([FromBody] Product model)
         {
